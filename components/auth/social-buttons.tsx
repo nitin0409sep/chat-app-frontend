@@ -63,11 +63,6 @@ export function SocialButtons({ disabled, onLogin }: SocialButtonsProps) {
         onClick={() => onLogin?.("google")}
       />
       <SocialButton
-        icon={<Apple className="size-[18px]" />}
-        label="Apple"
-        disabled={disabled}
-      />
-      <SocialButton
         icon={<Github className="size-[18px]" />}
         label="GitHub"
         disabled={disabled}

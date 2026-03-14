@@ -38,7 +38,6 @@ export const loginWithGoogle = () => loginWithProvider(googleProvider);
 export const loginWithGithub = () => loginWithProvider(githubProvider);
 
 export async function signOut() {
-  await publicAxios.post("/auth/logout", {}, { withCredentials: true });
   await firebaseSignOut(auth);
   window.location.href = "/login";
 }
