@@ -1,4 +1,5 @@
 import { Apple, Github } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 function GoogleIcon() {
   return (
@@ -27,14 +28,19 @@ interface SocialButtonProps {
   icon: React.ReactNode;
   label: string;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
-function SocialButton({ icon, label, onClick }: SocialButtonProps) {
+function SocialButton({ icon, label, onClick, disabled }: SocialButtonProps) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center justify-center gap-2 rounded-lg border-[1.5px] border-border-default bg-white px-4 h-11 text-[13px] font-medium text-text-primary hover:bg-surface-secondary transition-colors flex-1"
+      disabled={disabled}
+      className={cn(
+        "flex items-center justify-center gap-2 rounded-lg border-[1.5px] border-border-default bg-white px-4 h-11 text-[13px] font-medium text-text-primary transition-colors flex-1",
+        "hover:bg-surface-secondary disabled:opacity-50 disabled:cursor-not-allowed"
+      )}
     >
       {icon}
       {label}
@@ -42,12 +48,31 @@ function SocialButton({ icon, label, onClick }: SocialButtonProps) {
   );
 }
 
-export function SocialButtons() {
+interface SocialButtonsProps {
+  disabled?: boolean;
+  onLogin?: (provider: "google" | "github") => void;
+}
+
+export function SocialButtons({ disabled, onLogin }: SocialButtonsProps) {
   return (
     <div className="flex gap-3 w-full">
-      <SocialButton icon={<GoogleIcon />} label="Google" />
-      <SocialButton icon={<Apple className="size-[18px]" />} label="Apple" />
-      <SocialButton icon={<Github className="size-[18px]" />} label="GitHub" />
+      <SocialButton
+        icon={<GoogleIcon />}
+        label="Google"
+        disabled={disabled}
+        onClick={() => onLogin?.("google")}
+      />
+      <SocialButton
+        icon={<Apple className="size-[18px]" />}
+        label="Apple"
+        disabled={disabled}
+      />
+      <SocialButton
+        icon={<Github className="size-[18px]" />}
+        label="GitHub"
+        disabled={disabled}
+        onClick={() => onLogin?.("github")}
+      />
     </div>
   );
 }

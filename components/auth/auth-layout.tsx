@@ -1,4 +1,4 @@
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { SocialButtons } from "./social-buttons";
 
@@ -9,7 +9,12 @@ interface AuthLayoutProps {
   switchText: string;
   switchLabel: string;
   switchHref: string;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  isLoading?: boolean;
+  error?: string | null;
   children: React.ReactNode;
+  socialLoading?: boolean;
+  onSocialLogin?: (provider: "google" | "github") => void;
 }
 
 export function AuthLayout({
@@ -19,11 +24,22 @@ export function AuthLayout({
   switchText,
   switchLabel,
   switchHref,
+  onSubmit,
+  isLoading = false,
+  error,
   children,
+  socialLoading = false,
+  onSocialLogin,
 }: AuthLayoutProps) {
+  const isDisabled = isLoading || socialLoading;
+
   return (
     <div className="flex min-h-dvh items-center justify-center bg-white p-6">
-      <div className="w-full max-w-[380px] rounded-2xl border-[1.5px] border-border-default bg-white p-8 flex flex-col gap-6">
+      <form
+        onSubmit={onSubmit}
+        noValidate
+        className="w-full max-w-[380px] rounded-2xl border-[1.5px] border-border-default bg-white p-8 flex flex-col gap-6"
+      >
         {/* Logo Section */}
         <div className="flex flex-col items-center gap-2">
           <div className="flex items-center justify-center size-12 rounded-xl bg-brand">
@@ -35,14 +51,23 @@ export function AuthLayout({
           <p className="text-sm text-text-secondary">{subtitle}</p>
         </div>
 
+        {/* Server/Auth Error */}
+        {error && (
+          <div className="rounded-lg bg-red-50 border border-red-200 px-3 py-2.5 text-sm text-red-600">
+            {error}
+          </div>
+        )}
+
         {/* Form Fields */}
         <div className="flex flex-col gap-4">{children}</div>
 
         {/* Submit Button */}
         <button
           type="submit"
-          className="flex items-center justify-center w-full h-11 rounded-lg bg-brand text-white text-sm font-semibold hover:bg-brand/90 transition-colors"
+          disabled={isDisabled}
+          className="flex items-center justify-center gap-2 w-full h-11 rounded-lg bg-brand text-white text-sm font-semibold hover:bg-brand/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
+          {isLoading && <Loader2 className="size-4 animate-spin" />}
           {submitLabel}
         </button>
 
@@ -56,7 +81,10 @@ export function AuthLayout({
         </div>
 
         {/* Social Buttons */}
-        <SocialButtons />
+        <SocialButtons
+          disabled={isDisabled}
+          onLogin={onSocialLogin}
+        />
 
         {/* Switch Link */}
         <p className="text-center text-[13px] text-text-secondary">
@@ -68,7 +96,7 @@ export function AuthLayout({
             {switchLabel}
           </Link>
         </p>
-      </div>
+      </form>
     </div>
   );
 }

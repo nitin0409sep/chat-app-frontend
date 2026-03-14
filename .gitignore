@@ -19,6 +19,7 @@
 
 # production
 /build
+out
 
 # misc
 .DS_Store
@@ -42,3 +43,6 @@ next-env.d.ts
 
 # Claude
 .claude
+
+# VS Code
+.vscode
