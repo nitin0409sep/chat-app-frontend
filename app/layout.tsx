@@ -10,6 +10,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "ChatFlow",
   description: "A modern chat application",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
