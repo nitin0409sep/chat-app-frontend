@@ -1,0 +1,7 @@
+// .firebaserc tells Firebase which Firebase project your local repo is connected to.
+
+{
+  "projects": {
+    "default": "chat-app-frontend-6df21"
+  }
+}
