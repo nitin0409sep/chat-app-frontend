@@ -2,7 +2,9 @@ import axios, { type AxiosError } from "axios";
 import { signOut as firebaseSignOut } from "firebase/auth";
 import { auth } from "./firebase";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
+  ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1`
+  : "";
 
 // ─── Axios Instances ────────────────────────────────────────────────
 
