@@ -13,7 +13,7 @@ import { auth, githubProvider, googleProvider } from "./firebase";
 // ─── Firebase Auth Helpers ──────────────────────────────────────────
 async function exchangeTokenForSession(user: User) {
   const idToken = await user.getIdToken();
-  await publicAxios.post("/auth/session", { idToken }, { withCredentials: true });
+  await publicAxios.post("/public/session-login", { idToken }, { withCredentials: true });
 }
 
 export async function loginWithEmail(email: string, password: string) {
@@ -38,8 +38,13 @@ export const loginWithGoogle = () => loginWithProvider(googleProvider);
 export const loginWithGithub = () => loginWithProvider(githubProvider);
 
 export async function signOut() {
-  await firebaseSignOut(auth);
-  window.location.href = "/login";
+  try {
+    await firebaseSignOut(auth);
+    window.location.href = "/login";
+  } catch {
+    const { toast } = await import("react-toastify");
+    toast.error("Failed to log out. Please try again.");
+  }
 }
 
 // ─── Auth State Listener ───────────────────────────────────────────
